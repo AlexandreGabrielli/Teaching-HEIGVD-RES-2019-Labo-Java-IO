@@ -3,6 +3,7 @@ package ch.heigvd.res.labio.impl.filters;
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.LinkedList;
 import java.util.logging.Logger;
 
 /**
@@ -19,7 +20,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
     private int nomberOfLine = 1;
-
+    private boolean folow = false;
 
     public FileNumberingFilterWriter(Writer out) {
         super(out);
@@ -32,25 +33,49 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
-        //did we really need off and len ????????
-        for (char c : cbuf) {
-            write(c);
+        for (int i = 0; i < len; i++) {
+            write(cbuf[off + i]);
+        }
+        if (folow) {
+        for (char n : String.valueOf(nomberOfLine++).toCharArray()) {
+            super.write(n);
+        }
+            super.write('\t');
+        folow = false;
         }
     }
 
     @Override
     public void write(int c) throws IOException {
         //si c'est la 1er ligne
-        if (nomberOfLine == 1) {
-            super.write(nomberOfLine);
-            super.write('\\');
-            super.write(c);
+        int end;
+
+        if (folow) {
+            if (c == '\n' || c == '\r') {
+                folow = false;
+                super.write(c);
+            }
+            for (char n : String.valueOf(nomberOfLine++).toCharArray()) {
+                super.write(n);
+            }
+            super.write('\t');
+            if (folow) {
+                super.write(c);
+                folow = false;
+            }
+        } else if (nomberOfLine == 1) {
+            super.write('1');
+            super.write('\t');
             nomberOfLine++;
-        } else if (c == '\n' || c == '\r') {
             super.write(c);
-            super.write(nomberOfLine);
-            super.write('\\');
+        } else if (c == '\n' || c == '\r') {
+            folow = true;
+            super.write(c);
+            folow = true;
+        } else {
+            super.write(c);
         }
+
     }
 
 }
