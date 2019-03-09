@@ -23,7 +23,6 @@ public class UpperCaseFilterWriter extends FilterWriter {
         for (int i = 0 ; i < len ;i++){
             write(cbuf[off+i]);
         }
-
     }
 
     @Override
