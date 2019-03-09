@@ -37,19 +37,16 @@ public class FileNumberingFilterWriter extends FilterWriter {
             write(cbuf[off + i]);
         }
         if (folow) {
-        for (char n : String.valueOf(nomberOfLine++).toCharArray()) {
-            super.write(n);
-        }
+            for (char n : String.valueOf(nomberOfLine++).toCharArray()) {
+                super.write(n);
+            }
             super.write('\t');
-        folow = false;
+            folow = false;
         }
     }
 
     @Override
     public void write(int c) throws IOException {
-        //si c'est la 1er ligne
-        int end;
-
         if (folow) {
             if (c == '\n' || c == '\r') {
                 folow = false;
@@ -75,7 +72,5 @@ public class FileNumberingFilterWriter extends FilterWriter {
         } else {
             super.write(c);
         }
-
     }
-
 }
