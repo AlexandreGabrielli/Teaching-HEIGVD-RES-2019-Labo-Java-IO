@@ -68,11 +68,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
         } else if (c == '\n' || c == '\r') {
             folow = true;
             super.write(c);
-            folow = true;
         } else {
             super.write(c);
         }
-
     }
-
 }
