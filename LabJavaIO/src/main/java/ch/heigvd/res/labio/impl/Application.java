@@ -89,7 +89,7 @@ public class Application implements IApplication {
              * one method provided by this class, which is responsible for storing the content of the
              * quote in a text file (and for generating the directories based on the tags).
              */
-            storeQuote(quote,"quote-" + quote.getValue().getId());
+            storeQuote(quote, "quote-" + quote.getValue().getId());
             LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
             for (String tag : quote.getTags()) {
                 LOG.info("> " + tag);
@@ -139,6 +139,7 @@ public class Application implements IApplication {
         fichier.createNewFile();
         FileOutputStream writer = new FileOutputStream(fichier);
         writer.write(quote.getQuote().getBytes());
+        writer.close();
 
     }
 
@@ -148,16 +149,24 @@ public class Application implements IApplication {
      */
     void printFileNames(final Writer writer) {
         IFileExplorer explorer = new DFSFileExplorer();
-        explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
-            @Override
-            public void visit(File file) {
-                /*
-                 * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
-                 * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
-                 * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
-                 */
-            }
-        });
+
+
+            explorer.explore(new File(WORKSPACE_DIRECTORY), new IFileVisitor() {
+                @Override
+                public void visit(File file) {
+                    /*
+                     * There is a missing piece here. Notice how we use an anonymous class here. We provide the implementation
+                     * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
+                     * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
+                     */
+                    try {
+                        writer.write(file.getPath()+"\n");
+                    } catch (IOException e) {
+                        System.err.println("Mistake has been commit");
+                    }
+                }
+            });
+
     }
 
     @Override
