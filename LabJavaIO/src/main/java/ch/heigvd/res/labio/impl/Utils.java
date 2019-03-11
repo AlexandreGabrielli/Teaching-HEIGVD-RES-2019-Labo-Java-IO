@@ -21,10 +21,10 @@ public class Utils {
     public static String[] getNextLine(String lines) {
         int i = 0;
         String[] resultat = new String[2];
-        resultat[0] ="";
-        resultat[1]="";
+        resultat[0] = "";
+        resultat[1] = "";
         boolean next = false;
-        boolean hastwoligne =false;
+        boolean hastwoligne = false;
 
         for (char c : lines.toCharArray()) {
             if (next) {
@@ -40,16 +40,14 @@ public class Utils {
                 resultat[i] += c;
                 if (c == '\r' || c == '\n') {
                     next = true;
-                    hastwoligne =true;
+                    hastwoligne = true;
                 }
             }
         }
-
-        if (!hastwoligne){
+        if (!hastwoligne) {
             resultat[1] = resultat[0];
             resultat[0] = "";
         }
-
         return resultat;
     }
 

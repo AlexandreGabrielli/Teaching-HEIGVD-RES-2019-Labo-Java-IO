@@ -12,6 +12,7 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.core.sym.NameN;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -88,7 +89,7 @@ public class Application implements IApplication {
              * one method provided by this class, which is responsible for storing the content of the
              * quote in a text file (and for generating the directories based on the tags).
              */
-            storeQuote(quote, quote.getTags().get(i));
+            storeQuote(quote,"quotes" + quote.getValue().getId());
             LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
             for (String tag : quote.getTags()) {
                 LOG.info("> " + tag);
@@ -122,20 +123,22 @@ public class Application implements IApplication {
      * @throws IOException
      */
     void storeQuote(Quote quote, String filename) throws IOException {
-        String path = "/quotes/";
+        String path = WORKSPACE_DIRECTORY + "/";
         for (String c : quote.getTags()) {
             path += c + "/";
         }
-        path += "quotes" + ".utf8";
 
-        //list of file
+        File mk = new File(path);
+
+        mk.mkdirs();
+
+        path += filename + ".utf8";
 
         File fichier = new File(path);
-
+        //fichier.mkdirs();
         fichier.createNewFile();
-        FileWriter writer = new FileWriter(fichier);
-        writer.write(quote.getQuote());
-
+        FileOutputStream writer = new FileOutputStream(fichier);
+        writer.write(quote.getQuote().getBytes());
 
     }
 
