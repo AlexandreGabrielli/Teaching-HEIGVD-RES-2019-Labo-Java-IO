@@ -4,6 +4,8 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -20,9 +22,10 @@ public class DFSFileExplorer implements IFileExplorer {
     public void explore(File rootDirectory, IFileVisitor vistor) {
         vistor.visit(rootDirectory);
         if (rootDirectory.isDirectory()) {
-            for (File f : Objects.requireNonNull(rootDirectory.listFiles())) {
+            File[] files=  Objects.requireNonNull(rootDirectory.listFiles());
+            Arrays.sort(files);
+            for (File f : files ) {
                     explore(f, vistor);
-
             }
         }
     }
