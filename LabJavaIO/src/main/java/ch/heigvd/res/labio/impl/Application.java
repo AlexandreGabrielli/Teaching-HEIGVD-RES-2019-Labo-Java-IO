@@ -135,7 +135,6 @@ public class Application implements IApplication {
         path += filename + ".utf8";
 
         File fichier = new File(path);
-        //fichier.mkdirs();
         fichier.createNewFile();
         FileOutputStream writer = new FileOutputStream(fichier);
         writer.write(quote.getQuote().getBytes());
