@@ -4,7 +4,6 @@ import ch.heigvd.res.labio.interfaces.IFileExplorer;
 import ch.heigvd.res.labio.interfaces.IFileVisitor;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 
 /**
